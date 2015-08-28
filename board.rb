@@ -23,7 +23,7 @@ class Board
     system('clear')
 
     row_nums = "  "
-    (0..8).each { |num| row_nums << " #{num} " }
+    (0...grid.length).each { |num| row_nums << " #{num} " }
     puts row_nums
 
     grid.each_with_index { |row, idx| display_row(row, idx) }
@@ -63,8 +63,8 @@ class Board
 
   def place_bombs
     bomb_count = 0
-    until bomb_count == 10
-      pos = [rand(8), rand(8)]
+    until bomb_count == grid.length
+      pos = [rand(grid.length - 1), rand(grid.length - 1)]
       unless self[pos].is_a_bomb
         bomb = self[pos]
         bomb.is_a_bomb = true
@@ -78,13 +78,20 @@ class Board
   end
 
   def over?
+    bomb_positions = grid.flatten.select { |tile| tile.is_a_bomb }
+    not_bomb_positions = grid.flatten.select { |tile| !tile.is_a_bomb }
 
+    if (bomb_positions.all? {|tile| tile.flagged }) &&
+    (not_bomb_positions.all? {|tile| !tile.flagged })
+      Kernel.abort("Game over, you won!")
+      true
+    end
+
+    false
   end
-
 end
 
 if __FILE__ == $PROGRAM_NAME
   m = Board.new
   m.display
-
 end
