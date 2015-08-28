@@ -6,6 +6,7 @@ class Board
 
   def initialize(size = 9)
     @grid = Array.new(size) { Array.new(size) }
+    populate_grid
   end
 
   def [](pos)
@@ -18,10 +19,26 @@ class Board
     grid[x][y] = value
   end
 
+  def display
+    row_nums = "  "
+    (0..8).each { |num| row_nums << " #{num} " }
+    puts row_nums
+
+    grid.each_with_index { |row, idx| display_row(row, idx) }
+  end
+
+  def display_row(row, idx)
+    row_string = "#{idx} "
+    row.each do |tile|
+      row_string += tile.render
+    end
+    puts row_string
+  end
+
   def populate_grid
       place_tiles
       place_bombs
-      #set_adjacent_numbers
+      calculate_neighbor_bombs
   end
 
   def place_tiles
@@ -44,8 +61,14 @@ class Board
     end
   end
 
-  def set_adjacent_numbers
-
+  def calculate_neighbor_bombs
+    grid.flatten.each { |tile| tile.neighbor_bombs }
   end
+
+end
+
+if __FILE__ == $PROGRAM_NAME
+  m = Board.new
+  m.display
 
 end
