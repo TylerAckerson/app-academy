@@ -1,4 +1,4 @@
-require_relative 'tile.rb'
+require_relative 'tile'
 require 'byebug'
 
 class Board
@@ -20,17 +20,29 @@ class Board
   end
 
   def display
+    system('clear')
+
     row_nums = "  "
     (0..8).each { |num| row_nums << " #{num} " }
     puts row_nums
 
     grid.each_with_index { |row, idx| display_row(row, idx) }
+
+    sleep(1)
   end
 
   def display_row(row, idx)
     row_string = "#{idx} "
     row.each do |tile|
-      row_string += tile.render
+      if tile.flagged
+        row_string << "[f]"
+      elsif tile.revealed
+        row_string << tile.render
+      elsif tile.flagged
+
+      else
+        row_string << "[O]"
+      end
     end
     puts row_string
   end
@@ -63,6 +75,10 @@ class Board
 
   def calculate_neighbor_bombs
     grid.flatten.each { |tile| tile.neighbor_bombs }
+  end
+
+  def over?
+
   end
 
 end

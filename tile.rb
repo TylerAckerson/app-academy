@@ -24,14 +24,14 @@ class Tile
     else
       "[#{neighbor_bombs.length}]"
     end
-  end 
+  end
 
   def reveal
     @revealed = true
   end
 
   def toggle_flag
-    flagged = flagged ? false : true
+    self.flagged = flagged ? false : true
   end
 
   def neighbors
