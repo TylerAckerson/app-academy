@@ -2,15 +2,29 @@ require 'byebug'
 
 class Tile
   attr_reader   :revealed, :location
-  attr_accessor :flagged, :is_a_bomb, :board
+  attr_accessor :flagged, :is_a_bomb, :board, :neighbor_bombs
 
   def initialize(location, board)
     @board = board
     @is_a_bomb = false
     @revealed = false
     @flagged = false
-    @location = location 
+    @location = location
   end
+
+  def inspect
+    "location: #{location} \n is_a_bomb: #{is_a_bomb} \n neighbor_bombs: #{neighbor_bombs}"
+  end
+
+  def render
+    if is_a_bomb
+      "[!]"
+    elsif neighbor_bombs.length == 0
+      "[ ]"
+    else
+      "[#{neighbor_bombs.length}]"
+    end
+  end 
 
   def reveal
     @revealed = true
@@ -37,7 +51,8 @@ class Tile
     neighbors
   end
 
-  def neighbor_bomb_count
-    neighbors.count {|pos| board[pos].is_a_bomb}
+  def neighbor_bombs
+    # neighbor_bombs = neighbors.count {|pos| board[pos].is_a_bomb}
+    self.neighbor_bombs = neighbors.select {|pos| board[pos].is_a_bomb}
   end
 end
