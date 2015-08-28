@@ -1,5 +1,6 @@
 require_relative 'tile'
 require 'byebug'
+require 'colorize'
 
 class Board
   attr_accessor :grid
@@ -27,15 +28,13 @@ class Board
     puts row_nums
 
     grid.each_with_index { |row, idx| display_row(row, idx) }
-
-    sleep(1)
   end
 
   def display_row(row, idx)
     row_string = "#{idx} "
     row.each do |tile|
       if tile.flagged
-        row_string << "[f]"
+        row_string << "[f]".colorize(:green)
       elsif tile.revealed
         row_string << tile.render
       elsif tile.flagged
@@ -91,7 +90,7 @@ class Board
   end
 end
 
-if __FILE__ == $PROGRAM_NAME
-  m = Board.new
-  m.display
-end
+# if __FILE__ == $PROGRAM_NAME
+#   m = Board.new(20)
+#   m.display
+# end

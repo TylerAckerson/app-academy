@@ -51,6 +51,6 @@ end
 
 
 if __FILE__ == $PROGRAM_NAME
-  game = Game.new(1)
+  game = Game.new(20)
   game.play
 end

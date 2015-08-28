@@ -1,8 +1,9 @@
 require 'byebug'
+require 'colorize'
 
 class Tile
-  attr_reader   :revealed, :location
-  attr_accessor :flagged, :is_a_bomb, :board, :neighbor_bombs
+  attr_reader :location
+  attr_accessor :flagged, :is_a_bomb, :board, :revealed
 
   def initialize(location, board)
     @board = board
@@ -18,16 +19,23 @@ class Tile
 
   def render
     if is_a_bomb
-      "[!]"
+      "[!]".colorize(:red)
     elsif neighbor_bombs.length == 0
       "[ ]"
     else
-      "[#{neighbor_bombs.length}]"
+      "[#{neighbor_bombs.length}]".colorize(:blue)
     end
   end
 
   def reveal
-    @revealed = true
+    return if revealed
+    self.revealed = true
+
+    return unless neighbor_bombs.empty?
+
+    neighbors.each do |pos|
+      board[pos].reveal
+    end
   end
 
   def toggle_flag
@@ -52,6 +60,6 @@ class Tile
   end
 
   def neighbor_bombs
-    self.neighbor_bombs = neighbors.select {|pos| board[pos].is_a_bomb}
+    neighbors.select {|pos| board[pos].is_a_bomb}
   end
 end
