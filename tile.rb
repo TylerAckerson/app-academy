@@ -42,7 +42,7 @@ class Tile
       3.times do |y|
         neighbor_pos = [cur_x - x + 1, cur_y - y + 1]
         next if neighbor_pos == location
-        if neighbor_pos.all? { |coord| (0..8).include?(coord) }
+        if neighbor_pos.all? { |coord| (0...board.grid.length).include?(coord) }
           neighbors << neighbor_pos
         end
       end
@@ -52,7 +52,6 @@ class Tile
   end
 
   def neighbor_bombs
-    # neighbor_bombs = neighbors.count {|pos| board[pos].is_a_bomb}
     self.neighbor_bombs = neighbors.select {|pos| board[pos].is_a_bomb}
   end
 end

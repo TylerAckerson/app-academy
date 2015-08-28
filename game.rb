@@ -11,45 +11,31 @@ class Game
   def play
     board.display
 
-    while true
+    until board.over?
       get_move
-      evaluate_move
+
+      if board[player_move].is_a_bomb && player_opt == 'select'
+        board[player_move].reveal
+        board.display
+        Kernel.abort("You lose! Game over.")
+        break
+      else
+        evaluate_move
+      end
+
       board.display
     end
-    #until board.over?
-      #player interaction
-        #ask for a move
-        # if that move is a bomb you lost
-
-    #end
-
-    #you lost
-
-    #||
-
-    #you won!
-
   end
 
   def evaluate_move
     if player_opt.downcase == "flag"
-      puts board[player_move]
-      puts board[player_move].flagged
-
       board[player_move].toggle_flag
-      puts board[player_move].flagged
-
     elsif player_opt.downcase == "select"
       board[player_move].reveal
-      if board[player_move].is_a_bomb
-        puts "There's a bomb there, you idiot! You lose!"
-      end
-
     else
       get_move
       evaluate_move
     end
-
   end
 
   def get_move
@@ -65,6 +51,6 @@ end
 
 
 if __FILE__ == $PROGRAM_NAME
-  game = Game.new
+  game = Game.new(1)
   game.play
 end
