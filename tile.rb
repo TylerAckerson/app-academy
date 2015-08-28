@@ -2,14 +2,14 @@ require 'byebug'
 
 class Tile
   attr_reader   :revealed, :location
-  attr_accessor :flagged, :is_a_bomb
+  attr_accessor :flagged, :is_a_bomb, :board
 
-  def initialize(location) #should board be in here?
-    # @board = board
+  def initialize(location, board)
+    @board = board
     @is_a_bomb = false
     @revealed = false
     @flagged = false
-    @location = location #come back to this
+    @location = location 
   end
 
   def reveal
@@ -26,7 +26,6 @@ class Tile
 
     3.times do |x|
       3.times do |y|
-        # debugger
         neighbor_pos = [cur_x - x + 1, cur_y - y + 1]
         next if neighbor_pos == location
         if neighbor_pos.all? { |coord| (0..8).include?(coord) }
@@ -39,6 +38,6 @@ class Tile
   end
 
   def neighbor_bomb_count
-
+    neighbors.count {|pos| board[pos].is_a_bomb}
   end
 end
