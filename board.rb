@@ -89,8 +89,3 @@ class Board
     false
   end
 end
-
-# if __FILE__ == $PROGRAM_NAME
-#   m = Board.new(20)
-#   m.display
-# end
