@@ -23,7 +23,17 @@ class Tile
     elsif neighbor_bombs.length == 0
       "[ ]"
     else
-      "[#{neighbor_bombs.length}]".colorize(:blue)
+
+      color = case neighbor_bombs.length
+      when 2
+        :green
+      when 1
+        :blue
+      else
+        :red
+      end
+
+      "[#{neighbor_bombs.length}]".colorize(color)
     end
   end
 
